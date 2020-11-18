@@ -21,7 +21,6 @@
 # python
 /.venv
 .flaskenv
-.cache
 __pycache__
 
 # vscode
