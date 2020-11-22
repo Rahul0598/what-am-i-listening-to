@@ -38,11 +38,8 @@
 }
 
 .track {
-  width: 250px;
-  height: 250px;
   position: relative;
-  display: inline-block;
-  margin: 60px;
-  cursor: pointer;
+  display: inline-table;
+  margin: 0px 30px;
 }
 
