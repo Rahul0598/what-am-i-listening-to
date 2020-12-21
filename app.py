@@ -1,4 +1,3 @@
-import json
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 from flask import Flask

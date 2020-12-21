@@ -27,7 +27,6 @@ __pycache__
 
 # vscode
 /.vscode
-.cache
 
 npm-debug.log*
 yarn-debug.log*

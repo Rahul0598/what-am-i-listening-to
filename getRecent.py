@@ -4,7 +4,6 @@
 import os
 import requests
 from collections.abc import MutableMapping
-import enchant
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 from pymongo import MongoClient
@@ -46,16 +45,6 @@ def get_track_URI(artist_name, track_name):
                 return None
 
 
-def get_language(words):
-    en_dic = enchant.Dict("en_US" and "en_UK" and "en_IN")
-    fr_dic = enchant.Dict("fr_FR")
-    language = "other"
-    for w in list(words.split(" ")):
-        if en_dic.check(w):
-            language = "english"
-    return language
-
-
 def fetch_recent_tracks(recent_track_uts, page=1):
     api_url = 'http://ws.audioscrobbler.com/2.0/'
     headers = {
@@ -92,7 +81,6 @@ def save_recent_tracks():
         track_URI = get_track_URI(artist_name, track_name)
         track_features = sp.track(track_id=track_URI)
         features = sp.audio_features(track_URI)[0]
-        query = "INSERT INTO WAILT.AllSongs "
         rows.append(
             {
                 'uts': int(fields["date_uts"]),
@@ -100,7 +88,6 @@ def save_recent_tracks():
                 'album_name': album_name,
                 'track_name': track_name,
                 'track_uri': track_URI,
-                'language': get_language(track_name),
                 'popularity': track_features["popularity"],
                 'preview_url': track_features["preview_url"],
                 'danceability': features['danceability'],
