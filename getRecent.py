@@ -73,6 +73,8 @@ def save_recent_tracks():
     recent_track_uts = int(collection.find().sort([("uts", -1)]).limit(1)[0]["uts"]) + 1
 
     page = fetch_recent_tracks(recent_track_uts)
+    if int(page['recenttracks']['@attr']['total']) == 0:
+        return
     rows = []
     for track in page['recenttracks']['track']:
         fields = get_fields(track)
