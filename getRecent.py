@@ -83,9 +83,9 @@ def save_recent_tracks():
         track_features = sp.track(track_id=track_URI)
         audio_features = sp.audio_features(track_URI)[0]
         try:
-            date_uts = fields["date_uts"]
+            date_uts = int(fields["date_uts"])
         except KeyError:
-            date_uts = int((datetime.now() - timedelta(milliseconds=audio_features['duration_ms'])).timestamp())
+            continue
         rows.append(
             {
                 'uts': date_uts,
