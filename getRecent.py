@@ -7,6 +7,7 @@ from collections.abc import MutableMapping
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 from pymongo import MongoClient
+from datetime import datetime, timedelta
 
 
 def flatten(d, parent_key=''):
@@ -78,31 +79,35 @@ def save_recent_tracks():
         track_name = fields['name']
         album_name = fields['album_text']
         artist_name = fields['artist_text']
-        track_URI = get_track_URI(artist_name, track_name)
+        track_URI = get_track_URI(artist_name, track_name)        
         track_features = sp.track(track_id=track_URI)
-        features = sp.audio_features(track_URI)[0]
+        audio_features = sp.audio_features(track_URI)[0]
+        try:
+            date_uts = fields["date_uts"]
+        except KeyError:
+            date_uts = int((datetime.now() - timedelta(milliseconds=audio_features['duration_ms'])).timestamp())
         rows.append(
             {
-                'uts': int(fields["date_uts"]),
+                'uts': date_uts,
                 'artist_name': artist_name,
                 'album_name': album_name,
                 'track_name': track_name,
                 'track_uri': track_URI,
                 'popularity': track_features["popularity"],
                 'preview_url': track_features["preview_url"],
-                'danceability': features['danceability'],
-                'energy': features['energy'],
-                'key': features['key'],
-                'loudness': features['loudness'],
-                'mode': features['mode'],
-                'speechiness': features['speechiness'],
-                'acousticness': features['acousticness'],
-                'instrumentalness': features['instrumentalness'],
-                'liveness': features['liveness'],
-                'valence': features['valence'],
-                'tempo': features['tempo'],
-                'duration_ms': features['duration_ms'],
-                'time_signature': features['time_signature'],
+                'danceability': audio_features['danceability'],
+                'energy': audio_features['energy'],
+                'key': audio_features['key'],
+                'loudness': audio_features['loudness'],
+                'mode': audio_features['mode'],
+                'speechiness': audio_features['speechiness'],
+                'acousticness': audio_features['acousticness'],
+                'instrumentalness': audio_features['instrumentalness'],
+                'liveness': audio_features['liveness'],
+                'valence': audio_features['valence'],
+                'tempo': audio_features['tempo'],
+                'duration_ms': audio_features['duration_ms'],
+                'time_signature': audio_features['time_signature'],
                 'image_large': track_features["album"]["images"][0]["url"],
                 'image_medium': track_features["album"]["images"][1]["url"],
                 'image_small': track_features["album"]["images"][2]["url"]
