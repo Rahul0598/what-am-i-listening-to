@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import SongCard from './SongCard';
 
 const getRecentlyPlayed = async (updateRecentlyPlayed) => {
     try {
@@ -50,15 +51,7 @@ const RecentlyPlayed = () => {
                             var localDate = (new Date(played_at)).toLocaleString();
                             return (
                                 <div key={track.id} className='track'>
-                                    <iframe
-                                        title="Spotify"
-                                        className="SpotifyPlayer"
-                                        src={`https://embed.spotify.com/?uri=${track.uri}&view=coverart&theme=black`}
-                                        width={300}
-                                        height={380}
-                                        frameBorder="0"
-                                        allowtransparency="true"
-                                    />
+                                    <SongCard track_uri={track.uri}/>
                                     <p>{localDate}</p>
                                 </div>
                             )

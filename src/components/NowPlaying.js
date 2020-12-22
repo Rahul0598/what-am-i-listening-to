@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import RecentlyPlayed from './RecentlyPlayed';
+import SongCard from './SongCard';
 
 const getNowPlaying = async (updateNowPlaying) => {
     try {
@@ -60,15 +61,7 @@ const NowPlaying = () => {
             <div>
                 <h2>I'm Listening To</h2>
                 <p>{paused}</p>
-                <iframe
-                    title="Spotify"
-                    className="SpotifyPlayer"
-                    src={`https://embed.spotify.com/?uri=${track.uri}&view=coverart&theme=black`}
-                    width={300}
-                    height={380}
-                    frameBorder="0"
-                    allowtransparency="true"
-                />
+                <SongCard track_uri={track.uri} />
                 <p>Time Remaining {millisToMinutesAndSeconds(timeRemaining)}</p>
             </div>
         );
