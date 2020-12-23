@@ -71,50 +71,52 @@ def save_recent_tracks():
     collection = db['All Songs']
 
     recent_track_uts = int(collection.find().sort([("uts", -1)]).limit(1)[0]["uts"]) + 1
-
-    page = fetch_recent_tracks(recent_track_uts)
-    if int(page['recenttracks']['@attr']['total']) == 0:
-        return
-    rows = []
-    for track in page['recenttracks']['track']:
-        fields = get_fields(track)
-        track_name = fields['name']
-        album_name = fields['album_text']
-        artist_name = fields['artist_text']
-        track_URI = get_track_URI(artist_name, track_name)        
-        track_features = sp.track(track_id=track_URI)
-        audio_features = sp.audio_features(track_URI)[0]
-        try:
-            date_uts = int(fields["date_uts"])
-        except KeyError:
-            continue
-        rows.append(
-            {
-                'uts': date_uts,
-                'artist_name': artist_name,
-                'album_name': album_name,
-                'track_name': track_name,
-                'track_uri': track_URI,
-                'popularity': track_features["popularity"],
-                'preview_url': track_features["preview_url"],
-                'danceability': audio_features['danceability'],
-                'energy': audio_features['energy'],
-                'key': audio_features['key'],
-                'loudness': audio_features['loudness'],
-                'mode': audio_features['mode'],
-                'speechiness': audio_features['speechiness'],
-                'acousticness': audio_features['acousticness'],
-                'instrumentalness': audio_features['instrumentalness'],
-                'liveness': audio_features['liveness'],
-                'valence': audio_features['valence'],
-                'tempo': audio_features['tempo'],
-                'duration_ms': audio_features['duration_ms'],
-                'time_signature': audio_features['time_signature'],
-                'image_large': track_features["album"]["images"][0]["url"],
-                'image_medium': track_features["album"]["images"][1]["url"],
-                'image_small': track_features["album"]["images"][2]["url"]
-            }
-        )
+    resp = fetch_recent_tracks(recent_track_uts)
+    total_pages = int(resp['recenttracks']['@attr']['totalPages'])
+    for page_num in range(1, total_pages + 1):
+        page = fetch_recent_tracks(recent_track_uts, page_num)
+        if int(page['recenttracks']['@attr']['total']) == 0:
+            return
+        rows = []
+        for track in page['recenttracks']['track']:
+            fields = get_fields(track)
+            track_name = fields['name']
+            album_name = fields['album_text']
+            artist_name = fields['artist_text']
+            track_URI = get_track_URI(artist_name, track_name)        
+            track_features = sp.track(track_id=track_URI)
+            audio_features = sp.audio_features(track_URI)[0]
+            try:
+                date_uts = int(fields["date_uts"])
+            except KeyError:
+                continue
+            rows.append(
+                {
+                    'uts': date_uts,
+                    'artist_name': artist_name,
+                    'album_name': album_name,
+                    'track_name': track_name,
+                    'track_uri': track_URI,
+                    'popularity': track_features["popularity"],
+                    'preview_url': track_features["preview_url"],
+                    'danceability': audio_features['danceability'],
+                    'energy': audio_features['energy'],
+                    'key': audio_features['key'],
+                    'loudness': audio_features['loudness'],
+                    'mode': audio_features['mode'],
+                    'speechiness': audio_features['speechiness'],
+                    'acousticness': audio_features['acousticness'],
+                    'instrumentalness': audio_features['instrumentalness'],
+                    'liveness': audio_features['liveness'],
+                    'valence': audio_features['valence'],
+                    'tempo': audio_features['tempo'],
+                    'duration_ms': audio_features['duration_ms'],
+                    'time_signature': audio_features['time_signature'],
+                    'image_large': track_features["album"]["images"][0]["url"],
+                    'image_medium': track_features["album"]["images"][1]["url"],
+                    'image_small': track_features["album"]["images"][2]["url"]
+                }
+            )
     try:
         result = collection.insert_many(rows)
     except TypeError:
