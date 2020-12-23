@@ -1,40 +1,15 @@
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  /* background-color: #282c34; */
+  background-color: antiquewhite;
+  min-height: 100vh;
+  color: black;
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: right;
+  justify-content: right;
+  text-align: right;
   font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .track {
@@ -43,3 +18,28 @@
   margin: 0px 30px;
 }
 
+.nowPlaying {
+  margin-top: 10%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: calc(10px + 2vmin);
+  
+}
+
+.splitScreen {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.leftPane {
+  width: 90%;
+  font-size: calc(10px + 2vmin);
+}
+
+.rightPane {
+  width: 10%
+}

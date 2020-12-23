@@ -1,39 +1,28 @@
 import React, {useState, useEffect} from 'react';
+import {getPlayback} from '../data/getPlayback';
 import RecentlyPlayed from './RecentlyPlayed';
 import SongCard from './SongCard';
 
-const getNowPlaying = async (updateNowPlaying) => {
-    try {
-        const data = await 
-            fetch('/api/nowPlaying').then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                throw new Error('error');
-            })
-            .catch(() =>
-                updateNowPlaying({ error: 'Whoops! Something went wrong with Spotify API' })
-            );
-        updateNowPlaying(data);
-    }catch(err){
-        console.log("Error : ", err);
-    }
-};
-
 
 const NowPlaying = () => {
-    const [nowPlaying, updateNowPlaying] = useState(0);  
+    const [nowPlaying, updateNowPlaying] = useState(0);
 
     useEffect(() => {
-        getNowPlaying(updateNowPlaying);
-        const interval = setInterval(() => { getNowPlaying(updateNowPlaying) }, 60000);
+        var api_url = '/api/nowPlaying'
+        getPlayback(updateNowPlaying, api_url);
+        const interval = setInterval(() => { getPlayback(updateNowPlaying, api_url) }, 60000);
         return () => clearInterval(interval);
     }, []);
 
     const buildData = () => {
         const  { error } = nowPlaying;
         if(!nowPlaying?.listening){
-            return <RecentlyPlayed />;
+            return (
+                <div>
+                    <h2>Looks like I'm not listening to anything right now</h2>
+                    <RecentlyPlayed />
+                </div>
+            )
         }
 
         const track = nowPlaying?.item;
@@ -51,10 +40,11 @@ const NowPlaying = () => {
         }
 
         return (
-            <div>
+            <div className="nowPlaying">
                 <h2>I'm Listening To</h2>
                 <p>{paused}</p>
                 <SongCard track={track} />
+                <RecentlyPlayed />
             </div>
         );
     };

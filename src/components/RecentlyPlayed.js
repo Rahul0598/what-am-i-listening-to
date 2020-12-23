@@ -1,31 +1,14 @@
 import React, {useState, useEffect} from 'react';
+import {getPlayback} from '../data/getPlayback';
 import SongCard from './SongCard';
 
-const getRecentlyPlayed = async (updateRecentlyPlayed) => {
-    try {
-        const data = await 
-            fetch('/api/recentlyPlayed').then(res => {
-                if (res.ok) {
-                    return res.json();
-                }
-                throw new Error('error');
-            })
-            .catch(() =>
-                updateRecentlyPlayed({ error: 'Whoops! Something went wrong with Spotify API' })
-            );
-        updateRecentlyPlayed(data);
-    }catch(err){
-        console.log(err);
-    }
-};
-
-
 const RecentlyPlayed = () => {
-    const [recentlyPlayed, updateRecentlyPlayed] = useState(0);  
+    const [recentlyPlayed, updateRecentlyPlayed] = useState(0);
 
     useEffect(() => {
-        getRecentlyPlayed(updateRecentlyPlayed);
-        const interval = setInterval(() => { getRecentlyPlayed(updateRecentlyPlayed) }, 60000);
+        var api_url = '/api/recentlyPlayed'
+        getPlayback(updateRecentlyPlayed, api_url);
+        const interval = setInterval(() => { getPlayback(updateRecentlyPlayed, api_url) }, 60000);
         return () => clearInterval(interval);
     }, []);
 
@@ -43,21 +26,26 @@ const RecentlyPlayed = () => {
 
         return (
             <div>
-                <h2>Looks like I'm not listening to anything right now</h2>                
-                <h2>Recently Played Tracks</h2>
-                {
-                    tracks.map(trac => {
-                            const {played_at, track} = trac;
-                            var localDate = (new Date(played_at)).toLocaleString();
-                            return (
-                                <div key={track.id} className='track'>
-                                    <SongCard track={track}/>
-                                    <p>{localDate}</p>
-                                </div>
-                            )
-                        }
-                    )
-                }
+                <div className="splitScreen">
+                    <div className="leftPane">
+                        <h2>Last Played Track</h2>
+                        <div className='track'>
+                            {
+                                tracks.map(trac => {
+                                        const {played_at, track} = trac;
+                                        var localDate = (new Date(played_at)).toLocaleString();
+                                        return (
+                                            <div key={track.id}>
+                                                <SongCard track={track}/>
+                                                <p>{localDate}</p>
+                                            </div>
+                                        )
+                                    }
+                                )
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     };

@@ -28,7 +28,7 @@ def getNowPlaying():
 @app.route('/api/recentlyPlayed')
 @cross_origin()
 def getRecentlyPlayed():
-    return sp.current_user_recently_played(limit=10)
+    return sp.current_user_recently_played(limit=1)
 
 
 if __name__ == "__main__":
