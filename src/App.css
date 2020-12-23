@@ -1,14 +1,12 @@
 .App {
-  /* background-color: #282c34; */
-  background-color: antiquewhite;
+  background-color: #282c34;
   min-height: 100vh;
-  color: black;
+  color: white;
 }
 
 .App-header {
-  align-items: right;
-  justify-content: right;
   text-align: right;
+  margin-right: 2%;
   font-size: calc(10px + 2vmin);
 }
 
@@ -24,7 +22,6 @@
   justify-content: center;
   text-align: center;
   font-size: calc(10px + 2vmin);
-  
 }
 
 .splitScreen {
@@ -35,11 +32,6 @@
   justify-content: center;
 }
 
-.leftPane {
-  width: 90%;
-  font-size: calc(10px + 2vmin);
-}
-
-.rightPane {
-  width: 10%
+.datePicker {
+  margin-bottom: 20px;
 }

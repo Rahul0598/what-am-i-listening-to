@@ -8,7 +8,7 @@ const NowPlaying = () => {
     const [nowPlaying, updateNowPlaying] = useState(0);
 
     useEffect(() => {
-        var api_url = '/api/nowPlaying'
+        const api_url = '/api/nowPlaying'
         getPlayback(updateNowPlaying, api_url);
         const interval = setInterval(() => { getPlayback(updateNowPlaying, api_url) }, 60000);
         return () => clearInterval(interval);
@@ -19,7 +19,6 @@ const NowPlaying = () => {
         if(!nowPlaying?.listening){
             return (
                 <div>
-                    <h2>Looks like I'm not listening to anything right now</h2>
                     <RecentlyPlayed />
                 </div>
             )

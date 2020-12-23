@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {getPlayback} from '../data/getPlayback';
 import SongCard from './SongCard';
+import DateTime from './DatePicker';
 
 const RecentlyPlayed = () => {
     const [recentlyPlayed, updateRecentlyPlayed] = useState(0);
@@ -8,7 +9,7 @@ const RecentlyPlayed = () => {
     useEffect(() => {
         var api_url = '/api/recentlyPlayed'
         getPlayback(updateRecentlyPlayed, api_url);
-        const interval = setInterval(() => { getPlayback(updateRecentlyPlayed, api_url) }, 60000);
+        const interval = setInterval(() => { getPlayback(updateRecentlyPlayed, api_url) }, 30000);
         return () => clearInterval(interval);
     }, []);
 
@@ -26,25 +27,21 @@ const RecentlyPlayed = () => {
 
         return (
             <div>
-                <div className="splitScreen">
-                    <div className="leftPane">
-                        <h2>Last Played Track</h2>
-                        <div className='track'>
-                            {
-                                tracks.map(trac => {
-                                        const {played_at, track} = trac;
-                                        var localDate = (new Date(played_at)).toLocaleString();
-                                        return (
-                                            <div key={track.id}>
-                                                <SongCard track={track}/>
-                                                <p>{localDate}</p>
-                                            </div>
-                                        )
-                                    }
+                <h2>What was I listening to On : <DateTime /> </h2>
+                <div className='track'>
+                    {
+                        tracks.map(trac => {
+                                const {played_at, track} = trac;
+                                var localDate = (new Date(played_at)).toLocaleString();
+                                return (
+                                    <div key={track.id}>
+                                        <SongCard track={track}/>
+                                        <p>{localDate}</p>
+                                    </div>
                                 )
                             }
-                        </div>
-                    </div>
+                        )
+                    }
                 </div>
             </div>
         );

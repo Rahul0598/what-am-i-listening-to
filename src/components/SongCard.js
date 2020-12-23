@@ -23,7 +23,7 @@ const SongCard = track => {
                     title="Spotify"
                     className="SpotifyPlayer"
                     src={`https://open.spotify.com/embed-podcast/episode/${track.track.id}`}
-                    width={"100%"}
+                    width={300}
                     height={380}
                     frameBorder="0"
                     allowtransparency="true"
