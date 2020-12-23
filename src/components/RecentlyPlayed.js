@@ -43,7 +43,7 @@ const RecentlyPlayed = () => {
 
         return (
             <div>
-                <h2>Looks like I'm not listening to anything right now</h2>
+                <h2>Looks like I'm not listening to anything right now</h2>                
                 <h2>Recently Played Tracks</h2>
                 {
                     tracks.map(trac => {
@@ -51,7 +51,7 @@ const RecentlyPlayed = () => {
                             var localDate = (new Date(played_at)).toLocaleString();
                             return (
                                 <div key={track.id} className='track'>
-                                    <SongCard track_uri={track.uri}/>
+                                    <SongCard track={track}/>
                                     <p>{localDate}</p>
                                 </div>
                             )

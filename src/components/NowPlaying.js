@@ -20,12 +20,6 @@ const getNowPlaying = async (updateNowPlaying) => {
     }
 };
 
-function millisToMinutesAndSeconds(millis) {
-    var minutes = Math.floor(millis / 60000);
-    var seconds = ((millis % 60000) / 1000).toFixed(0);
-    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-  }
-  
 
 const NowPlaying = () => {
     const [nowPlaying, updateNowPlaying] = useState(0);  
@@ -47,7 +41,6 @@ const NowPlaying = () => {
         if(!nowPlaying?.is_playing){
             paused = "Currently Paused";
         }
-        var timeRemaining = Number(nowPlaying?.item?.duration_ms) - Number(nowPlaying?.progress_ms);
     
         if (error) {
             return <p>{error}</p>;
@@ -61,8 +54,7 @@ const NowPlaying = () => {
             <div>
                 <h2>I'm Listening To</h2>
                 <p>{paused}</p>
-                <SongCard track_uri={track.uri} />
-                <p>Time Remaining {millisToMinutesAndSeconds(timeRemaining)}</p>
+                <SongCard track={track} />
             </div>
         );
     };

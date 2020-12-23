@@ -1,4 +1,5 @@
 from spotipy import Spotify
+import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from flask import Flask
 from flask_cors import CORS, cross_origin
@@ -17,7 +18,7 @@ def index():
 @app.route('/api/nowPlaying')
 @cross_origin()
 def getNowPlaying():
-    nowPlaying = sp.current_user_playing_track()
+    nowPlaying = sp.currently_playing(additional_types="episode")
     if nowPlaying:
         nowPlaying["listening"] = True
         return nowPlaying
