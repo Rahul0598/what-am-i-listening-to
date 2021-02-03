@@ -73,11 +73,11 @@ def save_recent_tracks():
     recent_track_uts = int(collection.find().sort([("uts", -1)]).limit(1)[0]["uts"]) + 1
     resp = fetch_recent_tracks(recent_track_uts)
     total_pages = int(resp['recenttracks']['@attr']['totalPages'])
+    rows = []
     for page_num in range(1, total_pages + 1):
         page = fetch_recent_tracks(recent_track_uts, page_num)
         if int(page['recenttracks']['@attr']['total']) == 0:
             return
-        rows = []
         for track in page['recenttracks']['track']:
             fields = get_fields(track)
             track_name = fields['name']
@@ -90,6 +90,10 @@ def save_recent_tracks():
                 date_uts = int(fields["date_uts"])
             except KeyError:
                 continue
+            if audio_features is None:
+                with open('no_audio_features', 'a') as file:
+                    file.write(track_name + "," + album_name + "," + artist_name + "," + track_URI)
+                    continue
             rows.append(
                 {
                     'uts': date_uts,
