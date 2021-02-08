@@ -83,7 +83,11 @@ def save_recent_tracks():
             track_name = fields['name']
             album_name = fields['album_text']
             artist_name = fields['artist_text']
-            track_URI = get_track_URI(artist_name, track_name)        
+            track_URI = get_track_URI(artist_name, track_name)
+            if track_URI is None:
+                with open('no_audio_features', 'a') as file:
+                    file.write(track_name + "," + album_name + "," + artist_name + ",no_URI")
+                    continue
             track_features = sp.track(track_id=track_URI)
             audio_features = sp.audio_features(track_URI)[0]
             try:
